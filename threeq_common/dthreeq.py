@@ -28,6 +28,8 @@ def activation_fn(name: str, x: torch.Tensor) -> torch.Tensor:
         return torch.tanh(x)
     if name == "sigmoid":
         return torch.sigmoid(x)
+    if name in {"clip01", "hard_sigmoid"}:
+        return torch.clamp(x, 0.0, 1.0)
     if name == "relu":
         return F.relu(x)
     if name == "identity":
@@ -115,6 +117,9 @@ class DThreeQMLP(nn.Module):
         loss_mode: str,
         bias: bool = True,
         state_clip: float = 1.0,
+        state_min: float | None = None,
+        prediction_activation: str = "post",
+        activate_initial: bool = False,
         device: torch.device | None = None,
     ) -> None:
         super().__init__()
@@ -130,12 +135,18 @@ class DThreeQMLP(nn.Module):
         self.loss_mode = loss_mode
         self.bias = bool(bias)
         self.state_clip = float(state_clip)
+        self.state_min = -self.state_clip if state_min is None else float(state_min)
+        self.state_max = self.state_clip
+        self.prediction_activation = prediction_activation
+        self.activate_initial = bool(activate_initial)
         self.device = device
         self.n_layers = len(self.layer_sizes)
         if self.beta_sign not in {"plus", "minus", "plusminus"}:
             raise ValueError("beta_sign must be plus, minus, or plusminus")
         if self.loss_mode not in {"dplus", "ep"}:
             raise ValueError("loss_mode must be dplus or ep")
+        if self.prediction_activation not in {"post", "none"}:
+            raise ValueError("prediction_activation must be post or none")
 
         self.forward_weights = nn.ParameterList()
         self.backward_weights = nn.ParameterList()
@@ -158,7 +169,7 @@ class DThreeQMLP(nn.Module):
             return
         with torch.no_grad():
             for state in states:
-                state.clamp_(-self.state_clip, self.state_clip)
+                state.clamp_(self.state_min, self.state_max)
 
     def initial_states(self, x: torch.Tensor) -> List[torch.Tensor]:
         states: List[torch.Tensor] = []
@@ -167,7 +178,9 @@ class DThreeQMLP(nn.Module):
             current = self._act(current) @ w
             if self.bias:
                 current = current + self.forward_biases[i]
-            current = current.clamp(-self.state_clip, self.state_clip)
+            if self.activate_initial:
+                current = self._act(current)
+            current = current.clamp(self.state_min, self.state_max)
             states.append(current.detach())
         return states
 
@@ -187,8 +200,9 @@ class DThreeQMLP(nn.Module):
             if self.bias:
                 vf = vf + self.forward_biases[i]
                 vb = vb + self.backward_biases[i]
-            vf = self._act(vf)
-            vb = self._act(vb)
+            if self.prediction_activation == "post":
+                vf = self._act(vf)
+                vb = self._act(vb)
             forward_preds.append(vf)
             backward_preds.append(vb)
         return forward_preds, backward_preds
@@ -306,9 +320,12 @@ class DThreeQMLP(nn.Module):
             return 0.0
         saturated = 0.0
         total = 0
-        threshold = 0.98 * self.state_clip
+        upper_threshold = self.state_min + 0.98 * (self.state_max - self.state_min)
+        lower_threshold = self.state_min + 0.02 * (self.state_max - self.state_min)
         for state in states:
-            saturated += (state.abs() >= threshold).float().sum().item()
+            saturated += (
+                (state <= lower_threshold) | (state >= upper_threshold)
+            ).float().sum().item()
             total += state.numel()
         return float(saturated / max(1, total))
 
@@ -580,4 +597,3 @@ def train_one_dthreeq(config: Dict[str, Any]) -> Dict[str, Any]:
     if DTHREEQ_VARIANTS[variant]["loss_mode"] == "bp":
         return train_bp(config)
     return train_dthreeq(config)
-

@@ -2,11 +2,14 @@ from __future__ import annotations
 
 from ray import tune
 
-EXPERIMENT_NAME = "threeq-mnist-legacy-repro-v1"
+
+EXPERIMENT_NAME = "threeq-mnist-epthreeq-tune-v1"
 
 VARIANT_NAMES = [
-    "base3q_legacy_net1_5k_e8",
-    "epbase3q_legacy_net1_5k_e8",
+    "epbase3q_legacy_10k_e15_base",
+    "epbase3q_legacy_10k_e15_w5",
+    "epbase3q_legacy_10k_e15_alpha_hi",
+    "epbase3q_legacy_10k_e15_beta1",
 ]
 SEEDS = [42]
 

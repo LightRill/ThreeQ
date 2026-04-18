@@ -77,6 +77,179 @@ DTHREEQ_MNIST_FOCUS_VARIANTS: Dict[str, Dict[str, Any]] = {
         "weight_lr": 3e-3,
         "infer_steps": 10,
     },
+    "dthreeq_ep_tanh_nudge0p1_lr5e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "tanh",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 5e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_initact_tanh_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "tanh",
+        "activate_initial": True,
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_linear_tanh_nudge0p1_lr1e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "tanh",
+        "prediction_activation": "none",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 1e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_linear_tanh_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "tanh",
+        "prediction_activation": "none",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_linear_clip01_nudge0p1_lr1e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "clip01",
+        "state_min": 0.0,
+        "prediction_activation": "none",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 1e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_linear_clip01_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "clip01",
+        "state_min": 0.0,
+        "prediction_activation": "none",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_sigmoid_nudge0p05_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "sigmoid",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.05",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_sigmoid_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "sigmoid",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_sigmoid_nudge0p1_lr5e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "sigmoid",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 5e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_sigmoid_nudge0p2_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "sigmoid",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.2",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_relu_nudge0p1_lr1e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "relu",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 1e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_relu_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "relu",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_clip01_nudge0p05_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "clip01",
+        "state_min": 0.0,
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.05",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_clip01_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "clip01",
+        "state_min": 0.0,
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_clip01_nudge0p2_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "clip01",
+        "state_min": 0.0,
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.2",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_clip01_nudge0p1_lr5e3_decay20": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "clip01",
+        "state_min": 0.0,
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 5e-3,
+        "weight_lr_decay_epoch": 20,
+        "weight_lr_decay_factor": 0.2,
+        "infer_steps": 10,
+    },
     "dthreeq_ep_nudge0p2_lr1e3": {
         "family": "dthreeq",
         "hidden_sizes": [500],
@@ -103,6 +276,60 @@ DTHREEQ_MNIST_FOCUS_VARIANTS: Dict[str, Dict[str, Any]] = {
         "beta_sign": "plus",
         "weight_lr": 1e-3,
         "infer_steps": 20,
+    },
+    "dthreeq_plus_energy_direct_lr1e3": {
+        "family": "dthreeq_plus_energy",
+        "hidden_sizes": [500],
+        "loss_mode": "plus_energy",
+        "target_mode": "direct_clamp",
+        "beta_sign": "plus",
+        "weight_lr": 1e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_plus_energy_direct_lr3e4": {
+        "family": "dthreeq_plus_energy",
+        "hidden_sizes": [500],
+        "loss_mode": "plus_energy",
+        "target_mode": "direct_clamp",
+        "beta_sign": "plus",
+        "weight_lr": 3e-4,
+        "infer_steps": 10,
+    },
+    "dthreeq_plus_energy_nudge0p1_lr1e3": {
+        "family": "dthreeq_plus_energy",
+        "hidden_sizes": [500],
+        "loss_mode": "plus_energy",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 1e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_forward_target_direct_lr1e3": {
+        "family": "dthreeq_forward_target",
+        "hidden_sizes": [500],
+        "loss_mode": "forward_target",
+        "target_mode": "direct_clamp",
+        "beta_sign": "plus",
+        "weight_lr": 1e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_forward_target_nudge0p1_lr1e3": {
+        "family": "dthreeq_forward_target",
+        "hidden_sizes": [500],
+        "loss_mode": "forward_target",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 1e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_bidir_target_direct_lr1e3": {
+        "family": "dthreeq_bidir_target",
+        "hidden_sizes": [500],
+        "loss_mode": "bidir_target",
+        "target_mode": "direct_clamp",
+        "beta_sign": "plus",
+        "weight_lr": 1e-3,
+        "infer_steps": 10,
     },
     "dthreeq_dplus_direct_lr1e3": {
         "family": "dthreeq",
@@ -186,10 +413,15 @@ def _summarize_result(
         "activation",
         "bias",
         "state_clip",
+        "state_min",
+        "prediction_activation",
+        "activate_initial",
         "loss_mode",
         "target_mode",
         "beta_sign",
         "objective_name",
+        "weight_lr_decay_epoch",
+        "weight_lr_decay_factor",
     ]:
         if key in config:
             result[key] = config[key]
@@ -220,6 +452,162 @@ def _train_dthreeq_epoch(
     return mean_metrics([model.train_batch(x, y) for x, y in loader])
 
 
+def _state_delta(
+    states_free: List[torch.Tensor],
+    clamped_states_all: List[List[torch.Tensor]],
+) -> float:
+    value = 0.0
+    for states_clamped in clamped_states_all:
+        value += sum(
+            (c - f).abs().mean().item()
+            for c, f in zip(states_clamped, states_free)
+        ) / len(states_free)
+    return float(value / max(1, len(clamped_states_all)))
+
+
+def _common_dthreeq_batch_setup(
+    model: DThreeQMLP,
+    x: torch.Tensor,
+    y: torch.Tensor,
+) -> tuple[
+    torch.Tensor,
+    torch.Tensor,
+    torch.Tensor,
+    List[torch.Tensor],
+    List[torch.Tensor],
+    List[torch.Tensor],
+    List[List[torch.Tensor]],
+]:
+    x = x.to(model.device, non_blocking=True).view(x.shape[0], -1).float()
+    y = y.to(model.device, non_blocking=True).long()
+    y_one_hot = F.one_hot(y, num_classes=model.layer_sizes[-1]).float()
+    states0 = model.initial_states(x)
+    states_free = model.relax(x, states0, clamped=False)
+    layers_free = model.layers_from_states(x, [s.detach() for s in states_free])
+    clamped_states_all = []
+    layers_clamped_all = []
+    for sign in model.signs():
+        states_clamped = model.relax(
+            x, states_free, y_one_hot=y_one_hot, sign=sign, clamped=True
+        )
+        clamped_states_all.append(states_clamped)
+        layers_clamped_all.append(
+            model.layers_from_states(x, [s.detach() for s in states_clamped])
+        )
+    return (
+        x,
+        y,
+        y_one_hot,
+        states_free,
+        layers_free,
+        layers_clamped_all,
+        clamped_states_all,
+    )
+
+
+def _train_dthreeq_plus_energy_batch(
+    model: DThreeQMLP,
+    x: torch.Tensor,
+    y: torch.Tensor,
+) -> Dict[str, float]:
+    (
+        _x,
+        y,
+        y_one_hot,
+        states_free,
+        layers_free,
+        layers_clamped_all,
+        clamped_states_all,
+    ) = _common_dthreeq_batch_setup(model, x, y)
+    objective = sum(model.energy(layers).mean() for layers in layers_clamped_all)
+    objective = objective / max(1, len(layers_clamped_all))
+    update_rel = model.update_weights(objective)
+    with torch.no_grad():
+        pred = states_free[-1].argmax(dim=1)
+        return {
+            "train_error": (pred != y).float().mean().item(),
+            "train_energy": model.energy(layers_free).mean().item(),
+            "train_cost": F.mse_loss(states_free[-1], y_one_hot).item(),
+            "objective": objective.detach().item(),
+            "state_delta": _state_delta(states_free, clamped_states_all),
+            "saturation": model.state_saturation(states_free),
+            "weight_abs_mean": model.weight_abs_mean(),
+            "weight_update_rel_mean": update_rel,
+        }
+
+
+def _target_objective(
+    model: DThreeQMLP,
+    layers_free: List[torch.Tensor],
+    layers_clamped: List[torch.Tensor],
+    include_backward: bool,
+) -> torch.Tensor:
+    forward_free, _ = model.edge_predictions(layers_free)
+    terms = [
+        F.mse_loss(pred, layers_clamped[i + 1].detach())
+        for i, pred in enumerate(forward_free)
+    ]
+    if include_backward:
+        _, backward_clamped = model.edge_predictions(layers_clamped)
+        terms.extend(
+            F.mse_loss(pred, layers_free[i].detach())
+            for i, pred in enumerate(backward_clamped)
+        )
+    return sum(terms) / max(1, len(terms))
+
+
+def _train_dthreeq_target_batch(
+    model: DThreeQMLP,
+    x: torch.Tensor,
+    y: torch.Tensor,
+    include_backward: bool,
+) -> Dict[str, float]:
+    (
+        _x,
+        y,
+        y_one_hot,
+        states_free,
+        layers_free,
+        layers_clamped_all,
+        clamped_states_all,
+    ) = _common_dthreeq_batch_setup(model, x, y)
+    objective = sum(
+        _target_objective(model, layers_free, layers, include_backward)
+        for layers in layers_clamped_all
+    ) / max(1, len(layers_clamped_all))
+    update_rel = model.update_weights(objective)
+    with torch.no_grad():
+        pred = states_free[-1].argmax(dim=1)
+        return {
+            "train_error": (pred != y).float().mean().item(),
+            "train_energy": model.energy(layers_free).mean().item(),
+            "train_cost": F.mse_loss(states_free[-1], y_one_hot).item(),
+            "objective": objective.detach().item(),
+            "state_delta": _state_delta(states_free, clamped_states_all),
+            "saturation": model.state_saturation(states_free),
+            "weight_abs_mean": model.weight_abs_mean(),
+            "weight_update_rel_mean": update_rel,
+        }
+
+
+def _train_dthreeq_objective_epoch(
+    model: DThreeQMLP,
+    loader: Iterable,
+    family: str,
+) -> Dict[str, float]:
+    if family == "dthreeq_plus_energy":
+        return mean_metrics([_train_dthreeq_plus_energy_batch(model, x, y) for x, y in loader])
+    if family == "dthreeq_forward_target":
+        return mean_metrics(
+            [_train_dthreeq_target_batch(model, x, y, False) for x, y in loader]
+        )
+    if family == "dthreeq_bidir_target":
+        return mean_metrics(
+            [_train_dthreeq_target_batch(model, x, y, True) for x, y in loader]
+        )
+    raise ValueError(f"unknown objective family: {family}")
+
+
 def _eval_dthreeq(model: DThreeQMLP, loader: Iterable) -> Dict[str, float]:
     return mean_metrics([model.eval_batch(x, y) for x, y in loader])
 
@@ -237,6 +625,11 @@ def train_one_mnist_dthreeq_focus(config: Dict[str, Any]) -> Dict[str, Any]:
     hidden_sizes = list(run_cfg.get("hidden_sizes", [500]))
     n_epochs = int(run_cfg.get("n_epochs", 12))
     curves: List[Dict[str, float]] = []
+    objective_families = {
+        "dthreeq_plus_energy",
+        "dthreeq_forward_target",
+        "dthreeq_bidir_target",
+    }
 
     if variant["family"] == "bp_mlp":
         model = BPMLP(
@@ -251,6 +644,10 @@ def train_one_mnist_dthreeq_focus(config: Dict[str, Any]) -> Dict[str, Any]:
             _record_curve(curves, epoch, train_metrics, test_metrics)
         return _summarize_result(run_cfg, variant_name, variant, curves, start, device)
 
+    model_loss_mode = str(run_cfg.get("loss_mode", "dplus"))
+    if variant["family"] in objective_families:
+        model_loss_mode = "ep"
+
     model = DThreeQMLP(
         layer_sizes=[784] + hidden_sizes + [10],
         activation=str(run_cfg.get("activation", "tanh")),
@@ -259,13 +656,32 @@ def train_one_mnist_dthreeq_focus(config: Dict[str, Any]) -> Dict[str, Any]:
         weight_lr=float(run_cfg.get("weight_lr", 1e-3)),
         target_mode=str(run_cfg["target_mode"]),
         beta_sign=str(run_cfg["beta_sign"]),
-        loss_mode=str(run_cfg.get("loss_mode", "dplus")),
+        loss_mode=model_loss_mode,
         bias=bool(run_cfg.get("bias", True)),
         state_clip=float(run_cfg.get("state_clip", 1.0)),
+        state_min=(
+            None
+            if run_cfg.get("state_min") is None
+            else float(run_cfg.get("state_min"))
+        ),
+        prediction_activation=str(run_cfg.get("prediction_activation", "post")),
+        activate_initial=bool(run_cfg.get("activate_initial", False)),
         device=device,
     ).to(device)
+    base_weight_lr = float(run_cfg.get("weight_lr", 1e-3))
+    decay_epoch = run_cfg.get("weight_lr_decay_epoch")
+    decay_factor = float(run_cfg.get("weight_lr_decay_factor", 1.0))
     for epoch in range(n_epochs):
-        train_metrics = _train_dthreeq_epoch(model, train_loader, run_cfg, variant)
+        if decay_epoch is not None and epoch >= int(decay_epoch):
+            model.weight_lr = base_weight_lr * decay_factor
+        else:
+            model.weight_lr = base_weight_lr
+        if variant["family"] in objective_families:
+            train_metrics = _train_dthreeq_objective_epoch(
+                model, train_loader, str(variant["family"])
+            )
+        else:
+            train_metrics = _train_dthreeq_epoch(model, train_loader, run_cfg, variant)
         test_metrics = _eval_dthreeq(model, test_loader)
         _record_curve(curves, epoch, train_metrics, test_metrics)
     return _summarize_result(run_cfg, variant_name, variant, curves, start, device)
