@@ -1,0 +1,20 @@
+{
+  "dataframe_trial_count": 21,
+  "enumerated_keys": [
+    "variant",
+    "seed",
+    "n_samples",
+    "noise",
+    "batch_size",
+    "n_epochs",
+    "free_steps",
+    "epsilon",
+    "beta"
+  ],
+  "enumeration_reason": "param_space['hidden_sizes'] is not a scalar or top-level grid_search spec: list; param_space['alphas'] is not a scalar or top-level grid_search spec: list",
+  "enumeration_supported": false,
+  "failed_trial_count": 0,
+  "failed_trial_error_class_counts": {},
+  "failed_trials": [],
+  "result_grid_trial_count": 21
+}

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+
+# Local datasets and generated artifacts from legacy experiment scripts.
+data/
+logs/
+png/
+g=*/
+g(x)=*/
+
+# Keep comparable minimal-suite results versionable after materialization.
+experiments/minimal_suite/results/*
+!experiments/minimal_suite/results/*.csv
+!experiments/minimal_suite/results/*.md
+!experiments/minimal_suite/results/*.json

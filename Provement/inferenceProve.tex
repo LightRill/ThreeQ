@@ -1,0 +1,353 @@
+\documentclass[11pt]{article}
+
+% ===== 中文支持 =====
+\usepackage{xeCJK}
+\usepackage{fontspec}
+
+% ===== 英文字体 =====
+\setmainfont{TeX Gyre Termes}
+
+% ===== 中文字体 =====
+\setCJKmainfont{SimSun}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{3Q网络 Inference 稳定性与训练鲁棒性}
+\author{}
+\date{\today}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{定理}
+\newtheorem{lemma}{引理}
+\newtheorem{proposition}{命题}
+\newtheorem{corollary}{推论}
+\theoremstyle{remark}
+\newtheorem{remark}{注}
+\newtheorem{definition}{定义}
+
+\begin{document}
+\maketitle
+
+\section{模型定义与基本假设}
+
+考虑包含 $n$ 个节点的全连接 3Q 网络，状态 $u\in\mathbb R^n$。
+定义非线性映射
+\begin{equation}\label{eq:T}
+T(u,W) = \frac{1}{n-1}W g(u),
+\end{equation}
+其中 $g(u)=(g(u_1),\dots,g(u_n))^\top$，
+$W\in\mathbb R^{n\times n}$，且 $w_{ii}=0$（该约束对本文局部分析并非关键）。
+
+连续时间 inference 动力学定义为
+\begin{equation}\label{eq:ode}
+\dot u = f(u;W) \triangleq -\beta \big(u - T(u,W)\big), \qquad \beta>0.
+\end{equation}
+
+固定点满足
+\begin{equation}\label{eq:fp}
+u^*(W) = T(u^*(W),W).
+\end{equation}
+
+定义残差映射
+\begin{equation}\label{eq:F}
+F(u,W)=u-T(u,W).
+\end{equation}
+
+\subsection*{基本假设}
+
+\begin{enumerate}
+\item[\textbf{A1.}] $g\in C^2(\mathbb R)$ 且 $g',g''$ 有界。等价地，存在常数 $M_1,M_2>0$ 使
+\[
+\sup_{x\in\mathbb R}|g'(x)|\le M_1,\qquad \sup_{x\in\mathbb R}|g''(x)|\le M_2.
+\]
+这保证 $T(\cdot,W)$ 在任意有界集上二阶可微且余项可控。
+\item[\textbf{A2.}] 使用欧氏范数 $\|\cdot\|_2$ 及其诱导矩阵范数：
+\[
+\|A\|_2\triangleq \max_{\|x\|_2=1}\|Ax\|_2.
+\]
+\item[\textbf{A3.}] 在考虑的局部邻域内，训练目标 $E(u,W)$ 对 $(u,W)$ 可微，且 $\nabla_W E(u,W)$ 有界。
+（更严格的表述是：存在开集 $\Omega$ 使轨道/参数都在 $\Omega$ 内，并且 $\sup_{(u,W)\in\Omega}\|\nabla_W E(u,W)\|\le G$。）
+\end{enumerate}
+
+\section{预备概念：谱半径、Hurwitz、局部指数稳定}
+
+\begin{definition}[谱半径]
+矩阵 $A\in\mathbb R^{n\times n}$ 的谱半径定义为
+\[
+\rho(A)\triangleq \max\{|\lambda|:\lambda\in\sigma(A)\},
+\]
+其中 $\sigma(A)$ 为 $A$ 的特征值集合。
+\end{definition}
+
+\begin{definition}[Hurwitz 矩阵]
+若矩阵 $A$ 的所有特征值满足 $\mathrm{Re}(\lambda(A))<0$，
+则称 $A$ 为 Hurwitz 矩阵。等价地，线性系统 $\dot x = Ax$ 指数稳定。
+\end{definition}
+
+\begin{definition}[局部指数稳定]
+固定点 $u^*$ 称为局部指数稳定，若存在邻域 $\mathcal N$、常数 $C>0,\alpha>0$，
+使得任意 $u(0)\in\mathcal N$ 的解满足
+\[
+\|u(t)-u^*\|\le C e^{-\alpha t}\|u(0)-u^*\|,\quad \forall t\ge 0.
+\]
+\end{definition}
+
+\begin{remark}[Lyapunov 间接法（线性化法）]
+若向量场 $f$ 在 $u^*$ 附近 $C^1$，且线性化矩阵 $Df(u^*)$ Hurwitz，
+则非线性系统在 $u^*$ 处局部指数稳定。
+本文将用该结论把线性化稳定性推广回原系统。
+\end{remark}
+
+\section{Jacobian、线性化与局部指数稳定}
+
+定义
+\[
+D(u)=\mathrm{diag}(g'(u_1),\dots,g'(u_n)).
+\]
+对 \eqref{eq:T} 关于 $u$ 求导得 Jacobian：
+\begin{equation}\label{eq:J}
+J(u,W)=\frac{\partial T}{\partial u}(u,W)
+=\frac{1}{n-1}W D(u).
+\end{equation}
+
+设 $u^*$ 为固定点，令 $\delta=u-u^*$。由 $T(\cdot,W)$ 的 Taylor 展开，
+存在余项 $r(\delta)$ 使
+\begin{equation}\label{eq:taylor}
+T(u^*+\delta,W)
+= T(u^*,W)+J(u^*,W)\delta + r(\delta),
+\end{equation}
+且
+\begin{equation}\label{eq:littleo}
+\frac{\|r(\delta)\|}{\|\delta\|}\to 0 \quad (\delta\to 0).
+\end{equation}
+
+\begin{remark}[为何 \eqref{eq:littleo} 成立]
+因为 $g\in C^2$ 且 $g''$ 有界，$g$ 在任一点的 Taylor 余项为 $O(|\delta|^2)$；
+将其组合到向量形式后可得到 $\|r(\delta)\|\le C\|\delta\|^2$（在足够小邻域内），
+从而必有 $\|r(\delta)\|/\|\delta\|\to 0$。
+\end{remark}
+
+代入动力学 \eqref{eq:ode} 并使用固定点关系 $u^*=T(u^*,W)$ 得到扰动系统：
+\begin{equation}\label{eq:delta}
+\dot \delta
+= -\beta(I-J(u^*,W))\delta + \beta r(\delta).
+\end{equation}
+
+\begin{lemma}[局部指数稳定：充分谱条件]\label{lem:localexp}
+若
+\begin{equation}\label{eq:sufficient}
+\rho(J(u^*,W))<1,
+\end{equation}
+则固定点 $u^*$ 局部指数稳定。
+\end{lemma}
+
+\begin{proof}
+记 $J\triangleq J(u^*,W)$。
+由 $\rho(J)<1$，对任意特征值 $\lambda_k(J)$ 有 $|\lambda_k(J)|<1$，
+因此
+\[
+\mathrm{Re}(\lambda_k(J))\le |\lambda_k(J)|<1.
+\]
+线性化矩阵为
+\[
+A=-\beta(I-J).
+\]
+其特征值为 $-\beta(1-\lambda_k(J))$，其实部为 $-\beta(1-\mathrm{Re}(\lambda_k(J)))$，
+严格为负（因为 $\mathrm{Re}(\lambda_k(J))<1$）。
+故 $A$ Hurwitz。
+
+另一方面，向量场 $f(u;W)$ 在假设 A1 下为 $C^1$，
+且 \eqref{eq:delta} 中的余项 $\beta r(\delta)$ 满足 $\|r(\delta)\|=o(\|\delta\|)$。
+由 Lyapunov 间接法（线性化定理），原非线性系统在 $u^*$ 局部指数稳定。
+\end{proof}
+
+\begin{remark}[关于条件的强弱]
+对连续时间系统 \eqref{eq:ode}，局部稳定的“精确线性条件”是：
+\[
+\mathrm{Re}(\lambda_k(J(u^*,W)))<1,\ \forall k.
+\]
+本文使用的 $\rho(J)<1$ 是更强但更易处理的充分条件（便于后续鲁棒性证明）。
+\end{remark}
+
+\section{隐函数定理与固定点分支（存在、唯一、光滑）}
+
+\begin{lemma}[固定点方程的可解性条件]\label{lem:invert}
+若
+\begin{equation}\label{eq:detcond}
+\det(I-J(u^*,W))\neq 0,
+\end{equation}
+则 $\frac{\partial F}{\partial u}(u^*,W)$ 可逆。
+\end{lemma}
+
+\begin{proof}
+由 $F(u,W)=u-T(u,W)$，对 $u$ 求导：
+\[
+\frac{\partial F}{\partial u}(u,W)=I-\frac{\partial T}{\partial u}(u,W)=I-J(u,W).
+\]
+在 $(u^*,W)$ 处即为 $I-J(u^*,W)$。若其行列式非零则矩阵可逆。
+\end{proof}
+
+\begin{lemma}[隐函数定理：固定点分支]\label{lem:IFT}
+若 \eqref{eq:detcond} 成立，则存在 $W$ 的开邻域 $\mathcal U$，
+以及唯一 $C^1$ 映射 $u^*:\mathcal U\to\mathbb R^n$，
+使得对所有 $W'\in\mathcal U$ 有
+\[
+F(u^*(W'),W')=0.
+\]
+\end{lemma}
+
+\begin{proof}
+在假设 A1 下，$T$ 对 $u$ 可微且连续，故 $F$ 为 $C^1$。
+由引理 \ref{lem:invert}，$\partial F/\partial u$ 在 $(u^*,W)$ 可逆。
+隐函数定理保证存在邻域 $\mathcal U$ 上的唯一 $C^1$ 解分支 $u^*(W')$。
+\end{proof}
+
+\begin{remark}[与稳定条件的关系]
+若满足引理 \ref{lem:localexp} 的充分条件 $\rho(J(u^*,W))<1$，
+则 $1\notin\sigma(J)$，从而 $\det(I-J)\neq 0$ 自动成立，
+因此可直接推出固定点分支的存在唯一性。
+\end{remark}
+
+\section{谱条件的开性质（稳定性对参数扰动的鲁棒性）}
+
+在引理 \ref{lem:IFT} 给出的邻域 $\mathcal U$ 内，固定点 $u^*(W)$ 存在且唯一，
+因此可以定义
+\begin{equation}\label{eq:Phi}
+\Phi(W)=J(u^*(W),W)
+=\frac{1}{n-1}W D(u^*(W)),\quad W\in\mathcal U.
+\end{equation}
+
+\begin{lemma}[连续性]\label{lem:contPhi}
+$\Phi(W)$ 在 $\mathcal U$ 内连续。
+\end{lemma}
+
+\begin{proof}
+由引理 \ref{lem:IFT}，$u^*(W)$ 在 $\mathcal U$ 内连续；
+由 A1，$g'$ 连续，因此 $D(u^*(W))$ 连续；
+矩阵乘法与线性运算连续，
+故 $\Phi(W)$ 连续。
+\end{proof}
+
+\begin{lemma}[谱半径的连续性]\label{lem:contRho}
+函数 $A\mapsto \rho(A)$ 在有限维矩阵空间上连续。
+\end{lemma}
+
+\begin{remark}
+这是经典结论：特征值对矩阵条目连续（按特征多项式根的连续性），
+而 $\rho(A)=\max_{\lambda\in\sigma(A)}|\lambda|$ 为连续函数的有限最大值，因此连续。
+\end{remark}
+
+\begin{lemma}[稳定性的开性质]\label{lem:open}
+若存在 $\varepsilon>0$ 使
+\begin{equation}\label{eq:margin}
+\rho(\Phi(W))\le 1-\varepsilon,
+\end{equation}
+则存在 $\delta>0$，
+当
+\[
+\|W'-W\|<\delta
+\]
+时
+\[
+\rho(\Phi(W'))<1.
+\]
+\end{lemma}
+
+\begin{proof}
+由引理 \ref{lem:contPhi} 与引理 \ref{lem:contRho}，
+复合函数 $W\mapsto \rho(\Phi(W))$ 在 $\mathcal U$ 内连续。
+因此存在 $\delta>0$ 使得当 $\|W'-W\|<\delta$ 时
+\[
+|\rho(\Phi(W'))-\rho(\Phi(W))|<\varepsilon/2.
+\]
+由 \eqref{eq:margin} 得
+\[
+\rho(\Phi(W'))\le (1-\varepsilon)+\varepsilon/2=1-\varepsilon/2<1.
+\]
+\end{proof}
+
+\begin{remark}[“开性质”的含义]
+该引理表明：满足 $\rho(\Phi(W))<1$ 的权重集合是一个开集。
+直观上：只要离失稳边界还有正裕度，就存在一个“安全球”，小扰动不会立刻失稳。
+\end{remark}
+
+\section{小学习率下的稳定性保持（训练鲁棒性）}
+
+训练更新定义为
+\begin{equation}\label{eq:update}
+W^+=W-\eta \nabla_W E(u^*(W),W).
+\end{equation}
+
+\begin{lemma}[一次更新步的幅度上界]\label{lem:step}
+若在邻域内存在 $G>0$ 使
+\[
+\|\nabla_W E(u^*(W),W)\|\le G,
+\]
+则
+\[
+\|W^+-W\|\le \eta G.
+\]
+\end{lemma}
+
+\begin{proof}
+由 \eqref{eq:update}，
+\[
+\|W^+-W\|=\eta\|\nabla_W E(u^*(W),W)\|\le \eta G.
+\]
+\end{proof}
+
+\begin{theorem}[小学习率下稳定性保持]\label{thm:robust}
+设 $W\in\mathcal U$ 且存在 $\varepsilon>0$ 使 \eqref{eq:margin} 成立。
+再设 $\|\nabla_W E(u^*(W),W)\|\le G$。
+则存在
+\[
+\eta_{\max}=\delta/G>0
+\]
+（其中 $\delta$ 来自引理 \ref{lem:open}），使得当 $0<\eta<\eta_{\max}$ 时：
+
+\begin{enumerate}
+\item $W^+\in\mathcal U$，从而固定点 $u^*(W^+)$ 在 $\mathcal U$ 内存在且唯一；
+\item $\rho(\Phi(W^+))<1$；
+\item inference 在 $W^+$ 下，固定点 $u^*(W^+)$ 局部指数收敛。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由引理 \ref{lem:open}，存在 $\delta>0$ 使得
+\[
+\|W'-W\|<\delta \Rightarrow \rho(\Phi(W'))<1.
+\]
+由引理 \ref{lem:step}，
+\[
+\|W^+-W\|\le \eta G.
+\]
+取 $\eta_{\max}=\delta/G$，当 $\eta<\eta_{\max}$ 时有 $\|W^+-W\|<\delta$，
+从而 $\rho(\Phi(W^+))<1$。
+
+另外，由 $\|W^+-W\|<\delta$ 且 $\delta$ 取在 $\mathcal U$ 内部，
+可保证 $W^+\in\mathcal U$，因此固定点分支 $u^*(W^+)$ 存在且唯一（引理 \ref{lem:IFT}）。
+最后由引理 \ref{lem:localexp}，$\rho(\Phi(W^+))<1$ 推出在 $W^+$ 下局部指数稳定与收敛。
+\end{proof}
+
+\section{讨论：为何全局收缩常数可大于 1 仍收敛}
+
+\begin{remark}[全局 Lipschitz 常数 vs. 局部谱条件]
+若用全局 Lipschitz 上界估计
+\[
+\|J(u,W)\| \le \frac{1}{n-1}\|W\|\,\sup_x |g'(x)| \triangleq c,
+\]
+则 $c<1$ 是充分但往往极保守的条件。
+实际局部稳定取决于固定点处
+\[
+J(u^*,W)=\frac{1}{n-1}W D(u^*),
+\]
+以及其谱性质（例如 $\rho(J)<1$ 或更弱的 $\mathrm{Re}(\lambda(J))<1$）。
+因此可能出现 $c>1$ 甚至更大，但由于 $D(u^*)$ 很小（例如进入饱和区），
+从而 $\rho(J(u^*,W))<1$ 仍成立，系统仍然局部收敛。
+\end{remark}
+
+\end{document}
