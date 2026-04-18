@@ -236,7 +236,7 @@ def _train_dthreeq_variant_batch(
 ) -> Dict[str, float]:
     x = x.to(model.device, non_blocking=True).view(x.shape[0], -1).float()
     y = y.to(model.device, non_blocking=True).long()
-    y_one_hot = F.one_hot(y, num_classes=model.layer_sizes[-1]).float()
+    y_target = model.encode_labels(y)
     states0 = model.initial_states(x)
     states_free = model.relax(x, states0, clamped=False)
     layers_free = model.layers_from_states(x, [s.detach() for s in states_free])
@@ -244,7 +244,7 @@ def _train_dthreeq_variant_batch(
     objectives = []
     for sign in model.signs():
         states_clamped = model.relax(
-            x, states_free, y_one_hot=y_one_hot, sign=sign, clamped=True
+            x, states_free, y_one_hot=y_target, sign=sign, clamped=True
         )
         layers_clamped = model.layers_from_states(
             x, [s.detach() for s in states_clamped]
@@ -264,6 +264,7 @@ def _train_dthreeq_variant_batch(
     update_rel = model.update_weights(objective)
     with torch.no_grad():
         pred = states_free[-1].argmax(dim=1)
+        energy_diag = model.energy_diagnostics(layers_free)
         state_delta = 0.0
         for states_clamped in clamped_rows:
             state_delta += sum(
@@ -274,12 +275,13 @@ def _train_dthreeq_variant_batch(
         return {
             "train_error": (pred != y).float().mean().item(),
             "train_energy": model.energy(layers_free).mean().item(),
-            "train_cost": F.mse_loss(states_free[-1], y_one_hot).item(),
+            "train_cost": F.mse_loss(states_free[-1], y_target).item(),
             "objective": objective.detach().item(),
             "state_delta": float(state_delta),
             "saturation": model.state_saturation(states_free),
             "weight_abs_mean": model.weight_abs_mean(),
             "weight_update_rel_mean": update_rel,
+            **energy_diag,
         }
 
 

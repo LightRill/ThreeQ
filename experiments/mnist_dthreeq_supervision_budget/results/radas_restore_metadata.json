@@ -1,0 +1,24 @@
+{
+  "canonical_experiment_name": "_workspace_ThreeQ_threeq_mnist_dthreeq_supervision_budget_v2",
+  "display_experiment_name": "threeq-mnist-dthreeq-supervision-budget-v2",
+  "files": {
+    "diagnostics": "/workspace/ThreeQ/experiments/mnist_dthreeq_supervision_budget/results/radas_restore_diagnostics.json",
+    "metadata": "/workspace/ThreeQ/experiments/mnist_dthreeq_supervision_budget/results/radas_restore_metadata.json",
+    "results_csv": "/workspace/ThreeQ/experiments/mnist_dthreeq_supervision_budget/results/results.csv"
+  },
+  "materialized_at": "2026-04-18T12:48:05.344814",
+  "restore_source": {
+    "inference": "inferred",
+    "storage_kind": "local_storage_path",
+    "storage_path": "/mnt/data/nfs/ray-results"
+  },
+  "runtime_provenance": {
+    "canonical_experiment_name": "_workspace_ThreeQ_threeq_mnist_dthreeq_supervision_budget_v2",
+    "cwd": "/workspace/ThreeQ",
+    "display_experiment_name": "threeq-mnist-dthreeq-supervision-budget-v2",
+    "radas_import_path": "/mnt/data/home/yuhang/radas/radas/__init__.py",
+    "radas_module_file": "/mnt/data/home/yuhang/radas/radas/__init__.py",
+    "radas_package_root": "/mnt/data/home/yuhang/radas/radas",
+    "workspace_path": "/workspace/ThreeQ"
+  }
+}

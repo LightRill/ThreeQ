@@ -2,6 +2,11 @@ __pycache__/
 *.py[cod]
 ftjob_generated_*.py
 ftjob_generated_*.pkl
+# radas cluster packaging needs these temporary files visible to Ray.
+# Keep them out of commits by moving/removing them after submission.
+!ftjob_generated_entry_point_*.py
+!ftjob_generated_meta_config_*.pkl
+!ftjob_generated_param_space_*.pkl
 
 # Local datasets and generated artifacts from legacy experiment scripts.
 data/

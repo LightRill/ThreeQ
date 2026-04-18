@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import List
+import json
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -50,6 +51,32 @@ def _mean_summary(df: pd.DataFrame, group_cols: List[str], metrics: List[str]) -
     return out
 
 
+def _fill_curve_final_metrics(df: pd.DataFrame) -> pd.DataFrame:
+    metrics = [
+        "input_recon_energy",
+        "input_recon_energy_frac",
+        "weighted_input_recon_energy_frac",
+    ]
+    if "curve_json" not in df.columns:
+        return df
+    out = df.copy()
+    for metric in metrics:
+        if metric not in out.columns:
+            out[metric] = np.nan
+    for idx, value in out["curve_json"].items():
+        try:
+            curves = json.loads(value)
+        except (TypeError, ValueError):
+            continue
+        if not curves:
+            continue
+        final = curves[-1]
+        for metric in metrics:
+            if pd.isna(out.at[idx, metric]) and metric in final:
+                out.at[idx, metric] = final[metric]
+    return out
+
+
 def _plot_error(summary: pd.DataFrame, output: Path) -> None:
     table = summary.sort_values("best_test_error_mean")
     x = np.arange(len(table))
@@ -91,7 +118,9 @@ def _plot_diagnostics(summary: pd.DataFrame, output: Path) -> None:
     cols = [
         "state_delta_mean",
         "saturation_mean",
-        "weight_update_rel_mean",
+        "input_recon_energy_frac_mean",
+        "weighted_input_recon_energy_frac_mean",
+        "weight_update_rel_mean_mean",
         "weight_abs_mean_mean",
         "duration_sec_mean",
     ]
@@ -116,6 +145,7 @@ def _plot_diagnostics(summary: pd.DataFrame, output: Path) -> None:
 
 
 def write_summaries(df: pd.DataFrame, output_dir: Path) -> None:
+    df = _fill_curve_final_metrics(df)
     output_dir.mkdir(parents=True, exist_ok=True)
     figures_dir = output_dir / "figures"
     figures_dir.mkdir(parents=True, exist_ok=True)
@@ -127,13 +157,18 @@ def write_summaries(df: pd.DataFrame, output_dir: Path) -> None:
 
     metrics = [
         "best_test_error",
+        "selected_test_error",
+        "selected_test_accuracy",
         "final_test_error",
+        "final_state_test_error",
         "final_test_cost",
         "final_train_error",
         "final_train_cost",
         "final_train_energy",
         "state_delta",
         "saturation",
+        "input_recon_energy_frac",
+        "weighted_input_recon_energy_frac",
         "weight_abs_mean",
         "weight_update_rel_mean",
         "duration_sec",
@@ -147,11 +182,16 @@ def write_summaries(df: pd.DataFrame, output_dir: Path) -> None:
         "family",
         "best_test_error_mean",
         "best_test_error_std",
+        "selected_test_error_mean",
+        "selected_test_accuracy_mean",
         "final_test_error_mean",
+        "final_state_test_error_mean",
         "final_train_error_mean",
         "state_delta_mean",
         "saturation_mean",
-        "weight_update_rel_mean",
+        "input_recon_energy_frac_mean",
+        "weighted_input_recon_energy_frac_mean",
+        "weight_update_rel_mean_mean",
         "duration_sec_mean",
     ]
     compact = summary[[col for col in compact_cols if col in summary.columns]].copy()

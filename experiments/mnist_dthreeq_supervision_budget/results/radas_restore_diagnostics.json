@@ -1,0 +1,28 @@
+{
+  "dataframe_trial_count": 26,
+  "enumerated_keys": [
+    "variant",
+    "seed",
+    "dataset",
+    "train_subset",
+    "test_subset",
+    "n_epochs",
+    "batch_size",
+    "infer_lr",
+    "activation",
+    "bias",
+    "state_clip",
+    "residual_norm_eps"
+  ],
+  "enumeration_supported": true,
+  "expected_trial_count": 26,
+  "failed_trial_count": 0,
+  "failed_trial_error_class_counts": {},
+  "failed_trials": [],
+  "missing_reason_classification_supported": true,
+  "missing_trial_count": 0,
+  "missing_trial_reason_counts": {},
+  "missing_trials": [],
+  "observed_dataframe_trial_count_for_enumerated_space": 26,
+  "result_grid_trial_count": 26
+}

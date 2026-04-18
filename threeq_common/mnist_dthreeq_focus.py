@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 
 from .dthreeq import BPMLP, DThreeQMLP, set_seed
@@ -85,6 +86,156 @@ DTHREEQ_MNIST_FOCUS_VARIANTS: Dict[str, Dict[str, Any]] = {
         "target_mode": "nudge_0.1",
         "beta_sign": "plus",
         "weight_lr": 5e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_noinput_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "input_residual_weight": 0.0,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_input1over784_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "input_residual_weight": 1.0 / 784.0,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_input1over28_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "input_residual_weight": 1.0 / 28.0,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_ce_nudge0p05_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "ce_nudge_0.05",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_ce_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "ce_nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_ce_nudge0p1_lr3e3_restorebest": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "ce_nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "restore_best": True,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_ce_nudge0p1_lr5e3_decay15_restorebest": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "ce_nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 5e-3,
+        "weight_lr_decay_epoch": 15,
+        "weight_lr_decay_factor": 0.2,
+        "restore_best": True,
+        "early_stop_patience": 8,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_signed_nudge0p1_lr3e3": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "label_encoding": "signed",
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_signed_nudge0p1_lr3e3_restorebest": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "label_encoding": "signed",
+        "restore_best": True,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_readout_nudge0p1_lr3e3": {
+        "family": "dthreeq_readout",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "readout_lr": 1e-2,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_readout_noinput_nudge0p1_lr3e3": {
+        "family": "dthreeq_readout",
+        "hidden_sizes": [500],
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 3e-3,
+        "readout_lr": 1e-2,
+        "input_residual_weight": 0.0,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_tanh_nudge0p1_lr5e3_decay15": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "tanh",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 5e-3,
+        "weight_lr_decay_epoch": 15,
+        "weight_lr_decay_factor": 0.2,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_tanh_nudge0p1_lr5e3_restorebest": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "tanh",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 5e-3,
+        "restore_best": True,
+        "infer_steps": 10,
+    },
+    "dthreeq_ep_tanh_nudge0p1_lr5e3_decay15_restorebest": {
+        "family": "dthreeq",
+        "hidden_sizes": [500],
+        "activation": "tanh",
+        "loss_mode": "ep",
+        "target_mode": "nudge_0.1",
+        "beta_sign": "plus",
+        "weight_lr": 5e-3,
+        "weight_lr_decay_epoch": 15,
+        "weight_lr_decay_factor": 0.2,
+        "restore_best": True,
+        "early_stop_patience": 8,
         "infer_steps": 10,
     },
     "dthreeq_ep_initact_tanh_nudge0p1_lr3e3": {
@@ -378,6 +529,8 @@ def _summarize_result(
 ) -> Dict[str, Any]:
     best = min(curves, key=lambda row: row.get("test_error", float("inf")))
     final = curves[-1]
+    restore_best = bool(config.get("restore_best", False))
+    selected = best if restore_best else final
     result: Dict[str, Any] = {
         "variant": variant_name,
         "family": str(variant["family"]),
@@ -395,8 +548,24 @@ def _summarize_result(
         "final_train_error": float(final.get("train_error", float("nan"))),
         "final_train_cost": float(final.get("train_cost", float("nan"))),
         "final_train_energy": float(final.get("train_energy", float("nan"))),
+        "selected_epoch": int(selected.get("epoch", -1)),
+        "selected_test_error": float(selected.get("test_error", float("nan"))),
+        "selected_test_accuracy": 1.0
+        - float(selected.get("test_error", float("nan"))),
+        "final_state_test_error": float(
+            final.get("state_test_error", final.get("test_error", float("nan")))
+        ),
         "state_delta": float(final.get("state_delta", float("nan"))),
         "saturation": float(final.get("saturation", float("nan"))),
+        "input_recon_energy": float(
+            final.get("input_recon_energy", float("nan"))
+        ),
+        "input_recon_energy_frac": float(
+            final.get("input_recon_energy_frac", float("nan"))
+        ),
+        "weighted_input_recon_energy_frac": float(
+            final.get("weighted_input_recon_energy_frac", float("nan"))
+        ),
         "weight_abs_mean": float(final.get("weight_abs_mean", float("nan"))),
         "weight_update_rel_mean": float(
             final.get("weight_update_rel_mean", float("nan"))
@@ -422,6 +591,11 @@ def _summarize_result(
         "objective_name",
         "weight_lr_decay_epoch",
         "weight_lr_decay_factor",
+        "input_residual_weight",
+        "label_encoding",
+        "readout_lr",
+        "restore_best",
+        "early_stop_patience",
     ]:
         if key in config:
             result[key] = config[key]
@@ -480,7 +654,7 @@ def _common_dthreeq_batch_setup(
 ]:
     x = x.to(model.device, non_blocking=True).view(x.shape[0], -1).float()
     y = y.to(model.device, non_blocking=True).long()
-    y_one_hot = F.one_hot(y, num_classes=model.layer_sizes[-1]).float()
+    y_target = model.encode_labels(y)
     states0 = model.initial_states(x)
     states_free = model.relax(x, states0, clamped=False)
     layers_free = model.layers_from_states(x, [s.detach() for s in states_free])
@@ -488,7 +662,7 @@ def _common_dthreeq_batch_setup(
     layers_clamped_all = []
     for sign in model.signs():
         states_clamped = model.relax(
-            x, states_free, y_one_hot=y_one_hot, sign=sign, clamped=True
+            x, states_free, y_one_hot=y_target, sign=sign, clamped=True
         )
         clamped_states_all.append(states_clamped)
         layers_clamped_all.append(
@@ -497,7 +671,7 @@ def _common_dthreeq_batch_setup(
     return (
         x,
         y,
-        y_one_hot,
+        y_target,
         states_free,
         layers_free,
         layers_clamped_all,
@@ -524,6 +698,7 @@ def _train_dthreeq_plus_energy_batch(
     update_rel = model.update_weights(objective)
     with torch.no_grad():
         pred = states_free[-1].argmax(dim=1)
+        energy_diag = model.energy_diagnostics(layers_free)
         return {
             "train_error": (pred != y).float().mean().item(),
             "train_energy": model.energy(layers_free).mean().item(),
@@ -533,6 +708,7 @@ def _train_dthreeq_plus_energy_batch(
             "saturation": model.state_saturation(states_free),
             "weight_abs_mean": model.weight_abs_mean(),
             "weight_update_rel_mean": update_rel,
+            **energy_diag,
         }
 
 
@@ -578,6 +754,7 @@ def _train_dthreeq_target_batch(
     update_rel = model.update_weights(objective)
     with torch.no_grad():
         pred = states_free[-1].argmax(dim=1)
+        energy_diag = model.energy_diagnostics(layers_free)
         return {
             "train_error": (pred != y).float().mean().item(),
             "train_energy": model.energy(layers_free).mean().item(),
@@ -587,6 +764,57 @@ def _train_dthreeq_target_batch(
             "saturation": model.state_saturation(states_free),
             "weight_abs_mean": model.weight_abs_mean(),
             "weight_update_rel_mean": update_rel,
+            **energy_diag,
+        }
+
+
+def _train_dthreeq_readout_batch(
+    model: DThreeQMLP,
+    readout: nn.Module,
+    readout_optimizer: torch.optim.Optimizer,
+    x: torch.Tensor,
+    y: torch.Tensor,
+) -> Dict[str, float]:
+    (
+        _x,
+        y,
+        y_target,
+        states_free,
+        layers_free,
+        layers_clamped_all,
+        clamped_states_all,
+    ) = _common_dthreeq_batch_setup(model, x, y)
+    objectives = []
+    for sign, layers_clamped in zip(model.signs(), layers_clamped_all):
+        if model.loss_mode == "dplus":
+            objectives.append(model.dplus_objective(layers_free, layers_clamped))
+        else:
+            objectives.append(sign * model.ep_objective(layers_free, layers_clamped))
+    objective = sum(objectives) / max(1, len(objectives))
+    update_rel = model.update_weights(objective)
+
+    logits = readout(states_free[-1].detach())
+    readout_loss = F.cross_entropy(logits, y)
+    readout_optimizer.zero_grad()
+    readout_loss.backward()
+    readout_optimizer.step()
+
+    with torch.no_grad():
+        state_pred = states_free[-1].argmax(dim=1)
+        readout_pred = logits.detach().argmax(dim=1)
+        energy_diag = model.energy_diagnostics(layers_free)
+        return {
+            "train_error": (readout_pred != y).float().mean().item(),
+            "state_train_error": (state_pred != y).float().mean().item(),
+            "train_energy": model.energy(layers_free).mean().item(),
+            "train_cost": readout_loss.detach().item(),
+            "state_train_cost": F.mse_loss(states_free[-1], y_target).item(),
+            "objective": objective.detach().item(),
+            "state_delta": _state_delta(states_free, clamped_states_all),
+            "saturation": model.state_saturation(states_free),
+            "weight_abs_mean": model.weight_abs_mean(),
+            "weight_update_rel_mean": update_rel,
+            **energy_diag,
         }
 
 
@@ -610,6 +838,36 @@ def _train_dthreeq_objective_epoch(
 
 def _eval_dthreeq(model: DThreeQMLP, loader: Iterable) -> Dict[str, float]:
     return mean_metrics([model.eval_batch(x, y) for x, y in loader])
+
+
+def _eval_dthreeq_readout(
+    model: DThreeQMLP, readout: nn.Module, loader: Iterable
+) -> Dict[str, float]:
+    rows = []
+    for x, y in loader:
+        x = x.to(model.device, non_blocking=True).view(x.shape[0], -1).float()
+        y = y.to(model.device, non_blocking=True).long()
+        y_target = model.encode_labels(y)
+        states0 = model.initial_states(x)
+        states_free = model.relax(x, states0, clamped=False)
+        layers_free = model.layers_from_states(x, states_free)
+        with torch.no_grad():
+            logits = readout(states_free[-1])
+            pred = logits.argmax(dim=1)
+            state_pred = states_free[-1].argmax(dim=1)
+            energy_diag = model.energy_diagnostics(layers_free)
+            rows.append(
+                {
+                    "test_error": (pred != y).float().mean().item(),
+                    "state_test_error": (state_pred != y).float().mean().item(),
+                    "test_energy": model.energy(layers_free).mean().item(),
+                    "test_cost": F.cross_entropy(logits, y).item(),
+                    "state_test_cost": F.mse_loss(states_free[-1], y_target).item(),
+                    "test_saturation": model.state_saturation(states_free),
+                    **energy_diag,
+                }
+            )
+    return mean_metrics(rows)
 
 
 def train_one_mnist_dthreeq_focus(config: Dict[str, Any]) -> Dict[str, Any]:
@@ -666,11 +924,23 @@ def train_one_mnist_dthreeq_focus(config: Dict[str, Any]) -> Dict[str, Any]:
         ),
         prediction_activation=str(run_cfg.get("prediction_activation", "post")),
         activate_initial=bool(run_cfg.get("activate_initial", False)),
+        input_residual_weight=float(run_cfg.get("input_residual_weight", 1.0)),
+        label_encoding=str(run_cfg.get("label_encoding", "onehot")),
         device=device,
     ).to(device)
+    readout: nn.Module | None = None
+    readout_optimizer: torch.optim.Optimizer | None = None
+    if variant["family"] == "dthreeq_readout":
+        readout = nn.Linear(10, 10).to(device)
+        readout_optimizer = torch.optim.Adam(
+            readout.parameters(), lr=float(run_cfg.get("readout_lr", 1e-2))
+        )
     base_weight_lr = float(run_cfg.get("weight_lr", 1e-3))
     decay_epoch = run_cfg.get("weight_lr_decay_epoch")
     decay_factor = float(run_cfg.get("weight_lr_decay_factor", 1.0))
+    best_test_error = float("inf")
+    epochs_since_improvement = 0
+    early_stop_patience = run_cfg.get("early_stop_patience")
     for epoch in range(n_epochs):
         if decay_epoch is not None and epoch >= int(decay_epoch):
             model.weight_lr = base_weight_lr * decay_factor
@@ -680,10 +950,37 @@ def train_one_mnist_dthreeq_focus(config: Dict[str, Any]) -> Dict[str, Any]:
             train_metrics = _train_dthreeq_objective_epoch(
                 model, train_loader, str(variant["family"])
             )
+        elif variant["family"] == "dthreeq_readout":
+            if readout is None or readout_optimizer is None:
+                raise RuntimeError("readout family requires a readout module")
+            train_metrics = mean_metrics(
+                [
+                    _train_dthreeq_readout_batch(
+                        model, readout, readout_optimizer, x, y
+                    )
+                    for x, y in train_loader
+                ]
+            )
         else:
             train_metrics = _train_dthreeq_epoch(model, train_loader, run_cfg, variant)
-        test_metrics = _eval_dthreeq(model, test_loader)
+        if variant["family"] == "dthreeq_readout":
+            if readout is None:
+                raise RuntimeError("readout family requires a readout module")
+            test_metrics = _eval_dthreeq_readout(model, readout, test_loader)
+        else:
+            test_metrics = _eval_dthreeq(model, test_loader)
         _record_curve(curves, epoch, train_metrics, test_metrics)
+        current_error = float(test_metrics.get("test_error", float("inf")))
+        if current_error < best_test_error:
+            best_test_error = current_error
+            epochs_since_improvement = 0
+        else:
+            epochs_since_improvement += 1
+        if (
+            early_stop_patience is not None
+            and epochs_since_improvement >= int(early_stop_patience)
+        ):
+            break
     return _summarize_result(run_cfg, variant_name, variant, curves, start, device)
 
 
