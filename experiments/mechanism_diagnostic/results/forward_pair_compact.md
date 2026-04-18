@@ -1,0 +1,20 @@
+| target_name           | pair        | cosine   | norm_ratio   | sign_agreement   |
+|:----------------------|:------------|:---------|:-------------|:-----------------|
+| direct_plus           | dplus_vs_bp | 0.07598  | 0.1705       | 0.5685           |
+| gradual_100_0p01_plus | dplus_vs_bp | 0.06418  | 0.08171      | 0.5303           |
+| nudge_0p001_plus      | dplus_vs_bp | 0.03631  | 0.003567     | 0.5013           |
+| nudge_0p01_plus       | dplus_vs_bp | 0.07114  | 0.02588      | 0.5064           |
+| nudge_0p01_plusminus  | dplus_vs_bp | -0.1574  | 0.001345     | 0.4973           |
+| nudge_0p1_plus        | dplus_vs_bp | 0.075    | 0.1393       | 0.5468           |
+| direct_plus           | dplus_vs_ep | 0.9971   | 0.08308      | 0.9879           |
+| gradual_100_0p01_plus | dplus_vs_ep | 0.8466   | 0.000699     | 0.9831           |
+| nudge_0p001_plus      | dplus_vs_ep | 0.3804   | 2.553e-05    | 0.9902           |
+| nudge_0p01_plus       | dplus_vs_ep | 0.9276   | 0.0007701    | 0.9898           |
+| nudge_0p01_plusminus  | dplus_vs_ep | -0.829   | 4.62e-05     | 0.5167           |
+| nudge_0p1_plus        | dplus_vs_ep | 0.9967   | 0.008305     | 0.9877           |
+| direct_plus           | ep_vs_bp    | 0.08059  | 2.053        | 0.5695           |
+| gradual_100_0p01_plus | ep_vs_bp    | 0.07008  | 116.6        | 0.5315           |
+| nudge_0p001_plus      | ep_vs_bp    | 0.02145  | 134.4        | 0.502            |
+| nudge_0p01_plus       | ep_vs_bp    | 0.07076  | 33.58        | 0.5062           |
+| nudge_0p01_plusminus  | ep_vs_bp    | 0.07728  | 32.5         | 0.5756           |
+| nudge_0p1_plus        | ep_vs_bp    | 0.07808  | 16.77        | 0.5468           |
