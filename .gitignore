@@ -1,7 +1,5 @@
 __pycache__/
 *.py[cod]
-ftjob_generated_*.py
-ftjob_generated_*.pkl
 
 # Local datasets and generated artifacts from legacy experiment scripts.
 data/
