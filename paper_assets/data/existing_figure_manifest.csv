@@ -1,0 +1,9 @@
+source,copied_to
+"AllConnected3QTrained/g=relu/n_30,n_clamped_20,n_tracked_10,seed_0/n_30,n_clamped_20,n_tracked_10,Lg_10,seed_0_train.png",figures/existing/allconnected_train_convergence.png
+"AllConnected3QTrained/g=relu/n_30,n_clamped_20,n_tracked_10,seed_0/n_30,n_clamped_20,n_tracked_10,Lg_10,seed_0_train_rho.png",figures/existing/allconnected_train_rho.png
+Base3QClampWithLinear/twomoons_decision_boundary.png,figures/existing/base3q_clamp_twomoons.png
+EPBase3Q/twomoons_decision_boundary.png,figures/existing/epbase3q_twomoons.png
+CNN3Q/twomoons_decision_boundary.png,figures/existing/cnn3q_twomoons.png
+EPCNN3Q/twomoons_decision_boundary.png,figures/existing/epcnn3q_twomoons.png
+experiments/mnist_dthreeq_supervision_budget/results/figures/mnist_dthreeq_supervision_error.png,figures/existing/dthreeq_supervision_10k_error.png
+experiments/mnist_dthreeq_fullbudget_confirm/results/figures/mnist_dthreeq_supervision_error.png,figures/existing/dthreeq_fullbudget_error.png

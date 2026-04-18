@@ -1,0 +1,14 @@
+| objective_name | target_name | dplus_vs_bp_forward_cosine | dplus_vs_bp_forward_sign_agreement | dplus_vs_bp_forward_norm_ratio | dplus_vs_ep_forward_cosine | dplus_bp_scaled_free_mse_decrease | dplus_ep_scaled_free_mse_decrease |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| resnorm_layergain_beta_div1 | direct_plus | 0.0762 | 0.5685 | 7.62e+03 | 0.9975 | 4.27e-04 | 7.83e-04 |
+| layergain_beta_div1 | direct_plus | 0.0761 | 0.5685 | 0.1705 | 0.9973 | 4.28e-04 | 7.83e-04 |
+| resnorm_beta_div1 | direct_plus | 0.0760 | 0.5685 | 7.62e+03 | 0.9972 | 4.27e-04 | 7.81e-04 |
+| resnorm_beta_div2 | direct_plus | 0.0760 | 0.5685 | 7.62e+03 | 0.9972 | 4.27e-04 | 7.81e-04 |
+| raw | direct_plus | 0.0760 | 0.5685 | 0.1705 | 0.9971 | 4.27e-04 | 7.82e-04 |
+| beta_div1 | direct_plus | 0.0760 | 0.5685 | 0.1705 | 0.9971 | 4.27e-04 | 7.82e-04 |
+| beta_div2 | direct_plus | 0.0760 | 0.5685 | 0.1705 | 0.9971 | 4.27e-04 | 7.82e-04 |
+| resnorm_layergain_beta_div1 | nudge_0p1_plus | 0.0752 | 0.5468 | 6.23e+04 | 0.9972 | 4.27e-04 | 0.0064 |
+| layergain_beta_div1 | nudge_0p1_plus | 0.0751 | 0.5468 | 1.3931 | 0.9969 | 4.27e-04 | 0.0064 |
+| resnorm_beta_div1 | nudge_0p1_plus | 0.0750 | 0.5468 | 6.23e+04 | 0.9968 | 4.26e-04 | 0.0064 |
+| resnorm_beta_div2 | nudge_0p1_plus | 0.0750 | 0.5468 | 6.23e+05 | 0.9968 | 4.26e-04 | 0.0064 |
+| raw | nudge_0p1_plus | 0.0750 | 0.5468 | 0.1393 | 0.9967 | 4.27e-04 | 0.0064 |

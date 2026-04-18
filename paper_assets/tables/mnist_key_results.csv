@@ -1,0 +1,17 @@
+section,dataset_budget,family,variant,best_error,final_error,best_accuracy,selected_accuracy,rho_mean,saturation,note
+mnist_dthreeq_focus,"MNIST 10k/2k, 12 epochs",DThreeQ EP,dthreeq_ep_nudge0p1_lr1e3,0.196533203125,0.196533203125,0.803466796875,0.803466796875,,9.51316035968526e-05,扩大到 legacy 尺度后 DThreeQ EP-nudge 明显学习。
+mnist_dthreeq_fullbudget,"MNIST 60k/10k, 30 epochs",DThreeQ,dthreeq_ep_signed_nudge0p1_lr3e3_restorebest,0.1196755573248407,0.1620720541401273,0.8803244426751593,0.8803244426751593,,0.357754671364815,Full-data restore-best 接近 88%，但 final 后期崩塌。
+mnist_dthreeq_fullbudget,"MNIST 60k/10k, 30 epochs",DThreeQ,dthreeq_ep_ce_nudge0p1_lr3e3_restorebest,0.1210191082802547,0.1851612261146497,0.8789808917197452,0.8789808917197452,,0.2568319118692254,Full-data restore-best 接近 88%，但 final 后期崩塌。
+mnist_dthreeq_fullbudget,"MNIST 60k/10k, 30 epochs",DThreeQ,dthreeq_ep_ce_nudge0p1_lr3e3,0.1210191082802547,0.1851612261146497,0.8789808917197452,0.8148387738853503,,0.2568319118692254,Full-data restore-best 接近 88%，但 final 后期崩塌。
+mnist_dthreeq_fullbudget,"MNIST 60k/10k, 30 epochs",DThreeQ,dthreeq_ep_nudge0p1_lr3e3,0.1476910828025477,0.8368332006369427,0.8523089171974523,0.1631667993630573,,0.7104125838768336,Full-data restore-best 接近 88%，但 final 后期崩塌。
+mnist_dthreeq_longrun,"MNIST 10k/2k, 30 epochs",DThreeQ EP,dthreeq_ep_nudge0p1_lr3e3,0.16064453125,0.16455078125,0.83935546875,0.83935546875,,5.854252529037092e-07,当前稳定 EP-nudge baseline，约 83.9% best accuracy。
+mnist_dthreeq_supervision,"MNIST 10k/2k, 30 epochs",DThreeQ,dthreeq_ep_ce_nudge0p1_lr3e3,0.131591796875,0.134521484375,0.868408203125,0.865478515625,,0.0108290987573373,CE-style nudge 是当前最明确正向改动。
+mnist_dthreeq_supervision,"MNIST 10k/2k, 30 epochs",DThreeQ,dthreeq_ep_readout_nudge0p1_lr3e3,0.136962890625,0.141845703125,0.863037109375,0.858154296875,,6.829961283876607e-07,CE-style nudge 是当前最明确正向改动。
+mnist_dthreeq_supervision,"MNIST 10k/2k, 30 epochs",DThreeQ,dthreeq_ep_noinput_nudge0p1_lr3e3,0.156982421875,0.181396484375,0.843017578125,0.818603515625,,0.000528834145123,CE-style nudge 是当前最明确正向改动。
+mnist_dthreeq_supervision,"MNIST 10k/2k, 30 epochs",DThreeQ,dthreeq_ep_nudge0p1_lr3e3,0.16064453125,0.16455078125,0.83935546875,0.83544921875,,6.829961283876607e-07,CE-style nudge 是当前最明确正向改动。
+mnist_epthreeq_tune,"MNIST 10k/2k, 15 epochs",EPThreeQ legacy,epbase3q_legacy_10k_e15_beta1,0.13450000282377,0.1475000027939677,0.86549999717623,0.86549999717623,0.384811075925827,,EPThreeQ 回到约 86.5% accuracy。
+mnist_epthreeq_tune,"MNIST 10k/2k, 15 epochs",EPThreeQ legacy,epbase3q_legacy_10k_e15_w5,0.1350000026449561,0.1535000032186508,0.864999997355044,0.864999997355044,0.3329420688748359,,EPThreeQ 回到约 86.5% accuracy。
+mnist_epthreeq_tune,"MNIST 10k/2k, 15 epochs",EPThreeQ legacy,epbase3q_legacy_10k_e15_base,0.1495000027865171,0.1675000027194619,0.8504999972134829,0.8504999972134829,0.3640101417303085,,EPThreeQ 回到约 86.5% accuracy。
+mnist_legacy_repro,"MNIST 5k/1k, 8 epochs",EPThreeQ legacy,epbase3q_legacy_net1_5k_e8,0.2250000028312206,0.2280000028014183,0.7749999971687794,0.7749999971687794,0.3614692503213882,,直接调用原始类，验证原始 ThreeQ/EPThreeQ 可学习。
+mnist_legacy_repro,"MNIST 5k/1k, 8 epochs",ThreeQ legacy,base3q_legacy_net1_5k_e8,0.3980000051856041,0.3980000051856041,0.6019999948143959,0.6019999948143959,0.378903000831604,,直接调用原始类，验证原始 ThreeQ/EPThreeQ 可学习。
+mnist_small_budget,"MNIST 3k/1k, 3 epochs",DThreeQ EP,dthreeq_ep_nudge_0p01,0.866796875372529,0.866796875372529,0.13320312462747097,0.13320312462747097,,0.0025944487495862,小预算公共框架压力测试，接近随机。

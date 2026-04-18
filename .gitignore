@@ -14,6 +14,8 @@ logs/
 png/
 g=*/
 g(x)=*/
+!paper_assets/data/
+!paper_assets/data/*
 
 # Keep comparable minimal-suite results versionable after materialization.
 experiments/minimal_suite/results/*
