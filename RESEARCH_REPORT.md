@@ -458,3 +458,4 @@ MNIST screen 的下一步不应只加 epoch，而应按以下顺序拆解：
 | 2026-04-18 | `9382a5f` | 新增 DThreeQ mechanism diagnostics |
 | 2026-04-18 | `36f8d7d` | 新增本系统研究报告 |
 | 2026-04-18 | `ad2bc17` | 新增 Dplus fix diagnostic suite 与报告结论 |
+| 2026-04-18 | `247ef74` | 新增 MNIST comparable screen 与优化方向 |
