@@ -1,0 +1,24 @@
+{
+  "canonical_experiment_name": "_workspace_ThreeQ_dthreeq_twomoons_screen_v1",
+  "display_experiment_name": "dthreeq-twomoons-screen-v1",
+  "files": {
+    "diagnostics": "/workspace/ThreeQ/experiments/dthreeq_suite/results/radas_restore_diagnostics.json",
+    "metadata": "/workspace/ThreeQ/experiments/dthreeq_suite/results/radas_restore_metadata.json",
+    "results_csv": "/workspace/ThreeQ/experiments/dthreeq_suite/results/results.csv"
+  },
+  "materialized_at": "2026-04-18T05:29:28.894002",
+  "restore_source": {
+    "inference": "inferred",
+    "storage_kind": "local_storage_path",
+    "storage_path": "/mnt/data/nfs/ray-results"
+  },
+  "runtime_provenance": {
+    "canonical_experiment_name": "_workspace_ThreeQ_dthreeq_twomoons_screen_v1",
+    "cwd": "/workspace/ThreeQ",
+    "display_experiment_name": "dthreeq-twomoons-screen-v1",
+    "radas_import_path": "/mnt/data/home/yuhang/radas/radas/__init__.py",
+    "radas_module_file": "/mnt/data/home/yuhang/radas/radas/__init__.py",
+    "radas_package_root": "/mnt/data/home/yuhang/radas/radas",
+    "workspace_path": "/workspace/ThreeQ"
+  }
+}

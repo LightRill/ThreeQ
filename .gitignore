@@ -13,3 +13,8 @@ experiments/minimal_suite/results/*
 !experiments/minimal_suite/results/*.csv
 !experiments/minimal_suite/results/*.md
 !experiments/minimal_suite/results/*.json
+experiments/dthreeq_suite/results/*
+!experiments/dthreeq_suite/results/*.csv
+!experiments/dthreeq_suite/results/*.md
+!experiments/dthreeq_suite/results/*.json
+!experiments/dthreeq_suite/results/*.png
