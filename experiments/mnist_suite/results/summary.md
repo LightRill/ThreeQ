@@ -1,0 +1,28 @@
+# MNIST Comparable Screen
+
+Small-subset MNIST screen for BP, Base ThreeQ, EPThreeQ, DThreeQ/Dplus, CNNThreeQ, and EPCNNThreeQ. This is a feasibility screen, not a full MNIST benchmark.
+
+## Run Configuration
+
+| train_subset   | test_subset   | n_epochs   | batch_size   | device   |
+|:---------------|:--------------|:-----------|:-------------|:---------|
+| 3000           | 1000          | 3          | 64           | cuda     |
+
+## Summary By Variant
+
+| variant                        | family                    | best_test_error_mean   | best_test_error_std   | final_test_error_mean   | final_train_error_mean   | state_delta_mean   | saturation_mean   | duration_sec_mean   |
+|:-------------------------------|:--------------------------|:-----------------------|:----------------------|:------------------------|:-------------------------|:-------------------|:------------------|:--------------------|
+| bp_mlp_tanh                    | bp_mlp                    | 0.1114                 | 0.01643               | 0.1114                  | 0.101                    | n/a                | n/a               | 33.68               |
+| bp_cnn                         | bp_cnn                    | 0.1188                 | 0.01699               | 0.1188                  | 0.1326                   | n/a                | n/a               | 33.44               |
+| dthreeq_ep_nudge_0p01          | dthreeq                   | 0.8668                 | 0.006629              | 0.8668                  | 0.8624                   | 0.01628            | 0.002594          | 42.82               |
+| epcnnthreeq_ep                 | legacy_conv               | 0.8717                 | 0.07016               | 0.8717                  | 0.8774                   | n/a                | n/a               | 38.56               |
+| cnnthreeq_direct               | legacy_conv               | 0.8759                 | 0.07389               | 0.8805                  | 0.8732                   | n/a                | n/a               | 38.35               |
+| dthreeq_dplus_direct           | dthreeq                   | 0.8807                 | 0.009115              | 0.8807                  | 0.8765                   | 0.1458             | 0.008355          | 44.06               |
+| dthreeq_dplus_layergain_direct | dthreeq_variant_objective | 0.8807                 | 0.009115              | 0.8807                  | 0.8765                   | 0.1458             | 0.008355          | 42.85               |
+| epthreeq_cost_w10              | threeq_mlp                | 0.9043                 | 0.004419              | 0.9043                  | 0.9088                   | n/a                | 0.4517            | 45.13               |
+| epthreeq_tied_w10              | threeq_mlp                | 0.9064                 | 0.02596               | 0.9212                  | 0.916                    | n/a                | 0.3798            | 43.06               |
+| threeq_direct_cost_w10         | threeq_mlp                | 0.9163                 | 0.0192                | 0.9163                  | 0.9154                   | n/a                | 0.3859            | 44.2                |
+
+## Raw Curve JSON
+
+`results_raw.csv` stores per-trial `curve_json`; `curves.csv` contains the exploded per-epoch curves.
