@@ -17,6 +17,12 @@ g(x)=*/
 !paper_assets/data/
 !paper_assets/data/*
 
+# LaTeX build byproducts for paper assets.
+paper_assets/latex/*.aux
+paper_assets/latex/*.log
+paper_assets/latex/*.out
+paper_assets/latex/*.toc
+
 # Keep comparable minimal-suite results versionable after materialization.
 experiments/minimal_suite/results/*
 !experiments/minimal_suite/results/*.csv
