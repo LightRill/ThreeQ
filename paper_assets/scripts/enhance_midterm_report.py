@@ -12,6 +12,7 @@ from pathlib import Path
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.shared import Inches
 from docx.text.paragraph import Paragraph
@@ -43,13 +44,22 @@ def paragraph_before(paragraph: Paragraph, text: str = "", style: str | None = N
     return new_para
 
 
-def insert_table_before(target: Paragraph, rows: list[list[str]], style: str = "Table Grid") -> None:
+def insert_table_before(target: Paragraph, rows: list[list[str]], style: str = "Normal Table") -> None:
     body = target._parent
     table = body.add_table(rows=len(rows), cols=len(rows[0]), width=Inches(6.2))
     table.style = style
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    table.autofit = True
     for i, row in enumerate(rows):
         for j, value in enumerate(row):
-            table.cell(i, j).text = value
+            cell = table.cell(i, j)
+            cell.text = value
+            for paragraph in cell.paragraphs:
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            if i == 0:
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        run.bold = True
     target._p.addprevious(table._tbl)
 
 
@@ -58,7 +68,8 @@ def insert_picture_before(target: Paragraph, image: Path, caption: str, width: f
     pic_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = pic_para.add_run()
     run.add_picture(str(image), width=Inches(width))
-    cap_para = paragraph_before(target, caption, "Normal")
+    cap_style = "图名中文" if "图名中文" in [style.name for style in target.part.document.styles] else "Normal"
+    cap_para = paragraph_before(target, caption, cap_style)
     cap_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
@@ -80,7 +91,7 @@ def insert_supplement(doc: Document) -> None:
     paragraph_before(target, "2.2.7 基于现有实验结果的综合补充", "Heading 3")
     paragraph_before(
         target,
-        "在原有理论推导与收敛性实验基础上，本阶段进一步整理了 ThreeQ、EPThreeQ、DThreeQ、CNNThreeQ/EPCNNThreeQ 的可比较实验结果。整体上看，理论稳定性已经有较清晰证据，但训练有效性、更新方向与高维视觉任务上的泛化能力仍是后续工作的主要瓶颈。",
+        "在原有理论推导与收敛性实验基础上，本阶段进一步整理了 ThreeQ、EPThreeQ 与 DThreeQ 的可比较实验结果。考虑到当前仍有若干实验路线尚不充分，报告正文重点放在理论闭环较清楚、实验效果相对较好的部分：inference 收敛性验证、EPThreeQ 的稳定提升，以及 DThreeQ 在 CE-style 输出监督和 full-data restore-best 设置下的性能改进。",
         "Normal",
     )
 
@@ -136,66 +147,26 @@ def insert_supplement(doc: Document) -> None:
     )
     paragraph_before(target, "表2.3  DThreeQ 改进过程分阶段摘要。", "Normal").alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    paragraph_before(target, "2.2.9 Dplus、BP 与 EP 的机制诊断", "Heading 3")
+    paragraph_before(target, "2.2.9 输入能量与输出监督分析", "Heading 3")
     paragraph_before(
         target,
-        "为了分析 Dplus 是否真正形成了类似 BP 的跨层 credit assignment，本阶段在同一 mini-batch 和同一初始参数上比较了 BP、EP 与 Dplus 的更新向量。诊断指标包括 cosine similarity、norm ratio、sign agreement 和 one-step loss decrease。结果显示，Dplus 与 BP 的 forward cosine 只有约 0.03 到 0.08，sign agreement 接近随机；Dplus 与 EP 在 one-sided plus target 上高度同向但范数严重缩小；plusminus 变体出现明确符号抵消。",
-        "Normal",
-    )
-    insert_picture_before(
-        target,
-        FIG / "fig06_mechanism_direction_metrics.png",
-        "图2.12  Dplus、BP、EP 更新向量方向诊断。",
-    )
-    insert_picture_before(
-        target,
-        FIG / "fig07_mechanism_one_step_loss.png",
-        "图2.13  Dplus one-step loss decrease 与 plusminus 失败模式。",
-    )
-    insert_table_before(
-        target,
-        [
-            ["target", "Dplus vs BP cosine", "norm ratio", "sign agreement", "Dplus vs EP cosine", "raw free-MSE decrease"],
-            ["direct_plus", "0.0760", "0.1705", "0.5685", "0.9971", "3.57e-05"],
-            ["nudge_0p1_plus", "0.0750", "0.1393", "0.5468", "0.9967", "2.92e-05"],
-            ["nudge_0p01_plus", "0.0711", "0.0259", "0.5064", "0.9276", "5.37e-06"],
-            ["nudge_0p01_plusminus", "-0.1574", "0.0013", "0.4973", "-0.8290", "-2.96e-07"],
-        ],
-    )
-    paragraph_before(
-        target,
-        "表2.4  Dplus 机制诊断关键指标。结论是 Dplus 具有局部下降成分，但当前 residual-delta 构造不是 BP-like 更新方向；plusminus 应从主线中移除。",
-        "Normal",
-    ).alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-    paragraph_before(target, "2.2.10 输入能量、输出监督与 CNNThreeQ 结构扩展", "Heading 3")
-    paragraph_before(
-        target,
-        "MNIST 实验还显示，784 维输入重构项会影响 10 维分类监督，但简单删除输入项并不能解决问题。输入 residual weight 设为 0、1/784 或 1/28 会降低最终 accuracy，说明输入项既可能压制监督，也在维持可用表示。更合理的后续方向是 boundary-clamped input、per-layer normalized energy、CE/softmax 输出监督和保守学习率调度。",
+        "MNIST 实验还显示，784 维输入重构项会影响 10 维分类监督，但简单删除输入项并不能解决问题。输入 residual weight 设为 0、1/784 或 1/28 会降低最终 accuracy，说明输入项既可能压制监督，也在维持可用表示。相对而言，CE-style output nudge 是当前最明确的正向改动：在 10k/2k、30 epoch 设置下达到约 86.5% selected accuracy，并在 full-data restore-best 设置下接近 88.0%。",
         "Normal",
     )
     insert_picture_before(
         target,
         FIG / "fig08_input_energy_supervision.png",
-        "图2.14  输入重构能量比例与分类 accuracy 的关系。",
-    )
-    paragraph_before(
-        target,
-        "CNNThreeQ/EPCNNThreeQ 使用卷积与反卷积作为双向局部预测，是严格转置共享结构的重要推广。当前 legacy two-moons 图能够说明结构可行性，但尚不能作为性能排名证据；后续应建立独立的 CNN suite，固定数据、seed、状态步数、学习率和能量粒度，记录 best/final error、state delta、rho 或替代谱指标、saturation 与 runtime。",
-        "Normal",
-    )
-    insert_picture_before(
-        target,
-        FIG / "fig11_legacy_cnn_decision_boundaries.png",
-        "图2.15  CNNThreeQ/EPCNNThreeQ 的 legacy two-moons decision-boundary 结构探索。",
+        "图2.12  输入重构能量比例与分类 accuracy 的关系。",
     )
 
 
 def update_future_work(doc: Document) -> None:
+    schedule = find_paragraph(doc, "第十二～十四周")
+    replace_paragraph(schedule, "第十二～十四周：完成对称结构理论分析，推广到更一般的对称局部预测结构，进行数值实验验证；")
     p = find_paragraph(doc, "具体计划如下")
     replace_paragraph(
         p,
-        "具体计划调整如下：一是将 EPBase3Q 的 beta=1.0 与 weak_steps=5 扩展到更完整的 MNIST benchmark，并采用多 seed 与 best checkpoint 记录；二是在公共框架中逐项对齐 legacy hidden size、batch size、状态步数、epsilon、beta、alphas 和初始化，找出 small-budget 退化来源；三是继续推进 DThreeQ 的 CE/softmax 输出监督、boundary-clamped input、layer-normalized energy 与 conservative learning-rate schedule，目标是保住 full-data early-best 而不发生后期崩塌；四是重新设计 Dplus residual target，优先尝试 signed residual target、output-to-hidden residual injection 和带约束的 layer-wise gain，并以 BP cosine、sign agreement 和 one-step CE decrease 作为机制筛选门槛；五是建立 CNNThreeQ 独立实验套件，检验卷积/反卷积对称结构在更一般任务上的有效性。",
+        "具体计划调整如下：一是将 EPBase3Q 的 beta=1.0 与 weak_steps=5 扩展到更完整的 MNIST benchmark，并采用多 seed 与 best checkpoint 记录；二是在公共框架中逐项对齐 legacy hidden size、batch size、状态步数、epsilon、beta、alphas 和初始化，找出 small-budget 退化来源；三是继续推进 DThreeQ 的 CE/softmax 输出监督、boundary-clamped input、layer-normalized energy 与 conservative learning-rate schedule，目标是保住 full-data early-best 而不发生后期崩塌；四是保留 Dplus 机制诊断作为问题定位工具，但不把当前 residual-delta 结果作为主要性能结论，后续只在方向指标明显改善后再进入训练筛查。",
     )
 
 
@@ -207,7 +178,7 @@ def update_difficulties(doc: Document) -> None:
     )
     q = paragraph_after(
         p,
-        "具体而言，第一，Dplus 当前与 BP 更新方向不对齐，direct_plus 的 BP cosine 约为 0.076，plusminus 还会产生符号抵消；第二，EPThreeQ 虽然比 direct ThreeQ 稳定，但仍存在 early-best 后性能回退和训练成本较高的问题；第三，DThreeQ full-data restore-best 已接近 88.0% accuracy，但 final accuracy 会回退到约 83.8%，说明需要额外的状态稳定化与学习率调度；第四，CNNThreeQ 的卷积/反卷积对称结构尚缺少严格可比较实验，不能仅凭 legacy decision-boundary 图下结论。",
+        "具体而言，第一，EPThreeQ 虽然比 direct ThreeQ 稳定，但仍存在 early-best 后性能回退和训练成本较高的问题；第二，DThreeQ full-data restore-best 已接近 88.0% accuracy，但 final accuracy 会回退到约 83.8%，说明需要额外的状态稳定化与学习率调度；第三，Dplus 当前与 BP 更新方向仍不对齐，因此在中期报告中只作为机制问题和后续优化方向简要说明，不作为主要实验成果展开。",
         "Normal",
     )
     paragraph_after(
