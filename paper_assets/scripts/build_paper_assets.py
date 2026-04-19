@@ -729,6 +729,7 @@ def write_paper_summary(key: pd.DataFrame, progress: pd.DataFrame, mechanism: pd
 | Fig.8 | `figures/fig08_input_energy_supervision.png` | 输入重构能量比例与分类 accuracy 的关系 |
 | Fig.9 | `figures/fig09_controlled_inference_rho_divergence.png` | 受控线性 ThreeQ 母模型中 $\\rho>1$ 的指数发散证据 |
 | Fig.10 | `figures/fig10_training_rho_boundary_stress_test.png` | 训练更新跨过 $\\rho=1$ 后 post-update inference 发散 |
+| Fig.11 | `figures/fig11_legacy_cnn_decision_boundaries.png` | CNNThreeQ/EPCNNThreeQ 的 legacy two-moons decision-boundary 结构探索 |
 
 ## 3. 表格索引
 
@@ -741,7 +742,8 @@ def write_paper_summary(key: pd.DataFrame, progress: pd.DataFrame, mechanism: pd
 | `tables/dplus_fix_top_candidates.csv` / `.md` | residual normalization、scale calibration、layer gain 的候选诊断 |
 | `tables/controlled_inference_rho_summary.csv` / `.md` | 受控线性 inference 收敛/发散摘要 |
 | `tables/training_stability_stress_summary.csv` / `.md` | 小步/大步训练更新稳定性压力测试摘要 |
-| `latex/threeq_convergence_report.tex` / `.pdf` | 可迁移到论文的 LaTeX 学术报告 |
+| `latex/threeq_systematic_report.tex` / `.pdf` | 系统版 LaTeX 学术报告，覆盖 ThreeQ、EPThreeQ、DThreeQ、CNNThreeQ、收敛性、MNIST 与机制诊断 |
+| `latex/threeq_convergence_report.tex` / `.pdf` | 系统版报告的兼容入口，保留原收敛性报告路径 |
 
 ## 4. 可用于论文正文的判断
 
@@ -773,17 +775,19 @@ python paper_assets/scripts/build_paper_assets.py
 
 The script does not train models. It reads existing CSV/PNG artifacts under `experiments/` and selected legacy convergence outputs, then writes:
 
-- `figures/`: numbered figures for inference convergence, training convergence, MNIST performance, DThreeQ progress, and mechanism diagnostics.
+- `figures/`: numbered figures for inference convergence, training convergence, MNIST performance, DThreeQ progress, mechanism diagnostics, and legacy CNNThreeQ structure exploration.
 - `tables/`: compact CSV/Markdown tables.
 - `data/`: figure manifests and copied provenance metadata.
 - `PAPER_SUMMARY.md`: Chinese paper-writing summary.
-- `latex/threeq_convergence_report.tex`: paper-ready LaTeX report for ThreeQ inference/training convergence, including rho > 1 divergence evidence.
+- `latex/threeq_systematic_report.tex`: paper-ready systematic LaTeX report covering ThreeQ, EPThreeQ, DThreeQ, CNNThreeQ, convergence/divergence, MNIST behavior, and mechanism diagnostics.
+- `latex/threeq_convergence_report.tex`: compatibility copy of the systematic report, retaining the previous convergence-report entry point.
 
 Additional convergence report build:
 
 ```bash
 python paper_assets/scripts/build_convergence_report.py
-cd paper_assets/latex && xelatex -interaction=nonstopmode -halt-on-error threeq_convergence_report.tex
+python paper_assets/scripts/build_systematic_report.py
+cd paper_assets/latex && xelatex -interaction=nonstopmode -halt-on-error threeq_systematic_report.tex
 ```
 """
     (OUT / "README.md").write_text(text, encoding="utf-8")
